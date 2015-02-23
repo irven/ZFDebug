@@ -212,14 +212,21 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function dispatchLoopShutdown()
     {
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return;
-        }
         $disable = Zend_Controller_Front::getInstance()->getRequest()->getParam('ZFDEBUG_DISABLE');
-        if (isset($disable)) {
+        $headers = $this->getResponse()->getHeaders();
+
+        if ($this->getRequest()->isXmlHttpRequest() || isset($disable) || empty($headers)) {
             return;
         }
-        
+
+        if (!empty($headers)) {
+            foreach ($headers as $header) {
+                if ($header['name'] == 'Content-Type' && false === strpos($header, 'html')) {
+                    return;
+                }
+            }
+        }
+
         $html = '';
 
         $html .= "<div id='ZFDebug_info'>\n";
