@@ -221,7 +221,7 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
 
         if (!empty($headers)) {
             foreach ($headers as $header) {
-                if ($header['name'] == 'Content-Type' && false === strpos($header, 'html')) {
+                if ($header['name'] == 'Content-Type' && false === strpos($header['value'], 'html')) {
                     return;
                 }
             }
