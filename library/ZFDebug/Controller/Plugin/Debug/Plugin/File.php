@@ -115,7 +115,7 @@ class ZFDebug_Controller_Plugin_Debug_Plugin_File
         $html = '<h4>' . count($included).' files included worth ';
         $size = 0;
         foreach ($included as $file) {
-            $size += filesize($file);
+            $size += is_readable($file) ? filesize($file) : 0;
         }
         $html .= round($size/1024, 1).'K</h4>';
         
